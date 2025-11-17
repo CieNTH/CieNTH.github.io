@@ -565,6 +565,14 @@ a,button,input,textarea{
   z-index: 2;
 }
 
+/* === Lightbox : limiter la hauteur des images en mobile
+       pour laisser de la place à la légende === */
+@media (max-width: 700px){
+  .lb-image{
+    max-height: 55vh;   /* teste 55, et ajuste à 50 ou 60 si besoin */
+  }
+}
+
 /* FLÈCHES : alignées sur le centre vertical de l’image */
 .lb-prev, .lb-next{
   position: fixed;
