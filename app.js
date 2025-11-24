@@ -440,8 +440,6 @@ async function loadPages(){
     const data = await res.json();
 
     SITE_TITLE = data.siteTitle || SITE_TITLE;
-    const logoTextEl = document.querySelector(".logo-text");
-    if (logoTextEl) logoTextEl.textContent = SITE_TITLE;
 
     // Adaptation des pages -> dictionnaire
     PAGES = {};
