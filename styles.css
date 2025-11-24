@@ -322,7 +322,7 @@ a,button,input,textarea{
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.30);
+  background: rgba(0,0,0,0.05);
 }
 .hero-overlay {
   position: relative;
@@ -715,7 +715,7 @@ a,button,input,textarea{
 /* ACTUALITÉS */
 .page[data-page="actualites"] h1 {
   color: var(--c-muted); /* beige de ta palette */
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 1);
   font-size: 3vw;
 }
 
@@ -784,10 +784,6 @@ a,button,input,textarea{
 
 .news-hero__veil{
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom,
-              rgba(0,0,0,0.10) 0%,
-              rgba(0,0,0,0.30) 40%,
-              rgba(0,0,0,0.55) 100%); /* lisibilité */
 }
 .news-hero__title{
   position: absolute; left: 50%; top: 50%;
@@ -795,7 +791,6 @@ a,button,input,textarea{
   margin: 0;
   text-align: center;
   color: #fff;
-  text-shadow: 0 6px 24px rgba(0,0,0,.6);
   font-weight: 800;
   letter-spacing: 1.5px;
   font-size: clamp(1.6rem, 3.5vw + 0.6rem, 3.4rem);
@@ -1131,4 +1126,60 @@ body:has(.page[data-page="actualites"]) .site-footer {
   color: #ffffff;
   font-weight: 600;
   font-size: 1.05rem;
+}
+
+/* =========================================
+   VERSION PLUS LUMINEUSE AVEC BORDS BLANCS
+   (fond clair, blocs sombres)
+   À COLLER TOUT EN BAS
+   ========================================= */
+
+/* Fond global clair = bords blancs autour du site */
+body {
+  background: #f4f2ef;      /* blanc cassé / gris très clair */
+  color: var(--fg);         /* on garde ta couleur de texte par défaut */
+}
+
+/* Contenu recentré avec un peu plus d'air */
+.content {
+  max-width: 1100px;
+  margin: 2.5rem auto 3rem;
+  padding: 0 1.5rem;
+}
+
+/* Blocs principaux : restent sombres, mais encadrés sur fond clair */
+.page {
+  background: var(--bg-alt);                 /* 👈 on garde ton gris très foncé */
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);  /* léger contour */
+  box-shadow: 0 14px 40px rgba(0,0,0,0.45);  /* ombre un peu plus douce */
+}
+
+/* Biographie : on garde le texte clair sur fond sombre */
+.page[data-page="biographie"] .bio-text p {
+  color: var(--c-white);
+}
+
+/* Contact : on garde aussi le bloc sombre pour la cohérence */
+.page[data-page="contact"] .contact-card {
+  background: var(--bg-alt);
+  color: var(--fg);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+/* Billetterie : toujours dans le bloc sombre */
+.page[data-page="billetterie"] {
+  background: var(--bg-alt);
+}
+
+/* Galerie : cartes sombres sur fond clair */
+.page[data-page="galerie"] {
+  background: var(--bg-alt);
+}
+
+/* Footer : reste sombre, mais se détache sur le fond clair du body */
+.site-footer {
+  background: #050505;
+  color: rgba(255,255,255,0.9);
 }
