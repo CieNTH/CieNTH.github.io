@@ -716,7 +716,7 @@ a,button,input,textarea{
 .page[data-page="actualites"] h1 {
   color: var(--c-muted); /* beige de ta palette */
   text-shadow: 0 2px 12px rgba(0, 0, 0, 1);
-  font-size: 3vw;
+  font-size: clamp(3rem, 3vw, 4vw);
 }
 
 /* On masque le h1 standard injecté par la SPA pour cette page */
@@ -752,36 +752,6 @@ a,button,input,textarea{
   line-height: 1.2;
 }
 
-@media (max-width: 700px) {
-  .page[data-page="actualites"] h1 {
-    font-size: clamp(1.4rem, 6vw, 2.4rem); /* 👈 un peu plus petit */
-    max-width: 60vw;                       /* 👈 prend presque toute la largeur */
-    line-height: 1.2;                      /* 👈 resserre l'espacement vertical */
-    position: absolute; /* 👈 place le panneau juste après le hero */
-    top: 36.5vh;
-  }
-
-  .news-hero {
-    background-size: contain;     /* 🔥 montre toute l’image sans rogner */
-    background-position: center top; /* tu peux changer selon ton image */
-    background-repeat: no-repeat;
-    background-color: #000;       /* pour combler les bandes éventuelles */
-  }
-
-  .news-wrap {
-    position: absolute; /* 👈 place le panneau juste après le hero */
-    top: -20vh;          /* correspond à la hauteur du hero */
-    left: 0;
-    width: 100%;
-    z-index: 1;
-    background: #000;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    padding: clamp(20px, 3vw, 30px);
-    box-shadow: 0 -18px 50px rgba(0,0,0,.45);
-  }
-}
-
 .news-hero__veil{
   position: absolute; inset: 0;
 }
@@ -793,7 +763,7 @@ a,button,input,textarea{
   color: #fff;
   font-weight: 800;
   letter-spacing: 1.5px;
-  font-size: clamp(1.6rem, 3.5vw + 0.6rem, 3.4rem);
+  font-size: clamp(1.6rem, 3.5vw + 2rem, 3.4rem);
   padding: .25rem .6rem;
 }
 
@@ -877,58 +847,6 @@ a,button,input,textarea{
   display: inline-flex !important;
 }
 
-/* ==== Actualités : coller le dernier article au footer (mobile) ==== */
-@media (max-width: 700px){
-
-  /* 1) pas d'espace par défaut sur le paragraphe du lien */
-  .page[data-page="actualites"] .news-link{
-    margin: 0 !important;
-  }
-
-  /* 2) retire tout coussin en bas du panneau */
-  .page[data-page="actualites"] .news-wrap{
-    padding-bottom: 0 !important;
-  }
-
-  /* 3) compacte VRAIMENT le dernier article */
-  .page[data-page="actualites"] .news-item:last-child{
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    border-bottom: none !important;
-  }
-
-  /* 4) supprime la marge inférieure du wrapper .content juste pour Actualités */
-  .content:has(.page[data-page="actualites"]){
-    margin-bottom: 0 !important;
-  }
-
-  /* 5) rapproche le footer (sans changer les autres pages) */
-  body:has(.page[data-page="actualites"]) .site-footer{
-    margin-top: 6px !important;
-    padding-top: 10px !important;
-    padding-bottom: 12px !important;
-  }
-  body:has(.page[data-page="actualites"]) .footer-socials{
-    margin-bottom: 8px !important;
-  }
-}
-
-@media (max-width: 700px){
-  body.is-actualites .content{ margin-bottom: 0 !important; }
-  body.is-actualites .site-footer{
-    margin-top: 6px !important;
-    padding-top: 10px !important;
-    padding-bottom: 12px !important;
-  }
-  body.is-actualites .footer-socials{ margin-bottom: 8px !important; }
-}
-
-@media (max-width: 700px){
-  .news-wrap {
-    box-shadow: 0 -8px 24px rgba(0,0,0,.28);
-  }
-}
-
 /* === Sticky footer layout (works for short pages) === */
 html, body {
   height: 100%;
@@ -954,6 +872,100 @@ body {
 .site-footer {
   flex: 0 0 auto;
   margin-top: 0;                /* ensure no accidental extra gap */
+}
+
+/* === Actualités : fond noir + page plus compacte === */
+body.is-actualites {
+  background: #000;              /* fond noir pour cette page */
+}
+
+body.is-actualites .content {
+  margin-bottom: 0.5rem;         /* réduit l’espace sous le contenu */
+}
+
+body.is-actualites .site-footer {
+  margin-top: 0.5rem;            /* rapproche le footer du bloc d’articles */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* =========================================
+   ACTUALITÉS — mobile
+   Photo FIXE + bloc qui défile par-dessus
+   ========================================= */
+@media (max-width: 700px) {
+
+  /* Fond bien noir sur cette page */
+  body.is-actualites {
+    background: #000;
+  }
+
+  /* On cache le titre sur mobile */
+  .page[data-page="actualites"] h1,
+  .news-hero__title {
+    display: none !important;
+  }
+
+  /* PHOTO :
+     - fixe au viewport
+     - toute l'image visible (contain)
+  */
+  .news-hero {
+    position: fixed !important;
+    top: 30px;                  /* ⬅️ commence sous le header */
+    left: 0;
+    right: 0;
+    height: calc(100vh - 64px);
+    background-size: contain;      /* montre toute l'image */
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-color: #000;        /* bandes noires autour si besoin */
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Laisse un espace de 100vh pour que toute la photo soit visible au début */
+  .news-spacer {
+    height: (100vh-64px) !important;
+  }
+
+  /* BLOC AVEC LES ARTICLES :
+     - chevauche la partie basse de la photo
+     - remonte bien vers le bas de l'image
+  */
+  .news-wrap {
+    position: relative !important;
+    z-index: 1;
+    margin-top: -78vh !important;    /* 🔥 joue entre -35vh et -45vh */
+    background: #000;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    padding: 24px 16px 40px;
+    box-shadow: 0 -14px 32px rgba(0,0,0,.55);
+  }
+
+  /* Articles un peu resserrés */
+  .news-item {
+    padding: 10px 0;
+  }
+
+  /* Réduire la “queue” noire sous les articles */
+  body.is-actualites .content {
+    margin-bottom: 0 !important;
+  }
+
+  body.is-actualites .site-footer {
+    margin-top: 6px !important;
+    padding-top: 10px !important;
+    padding-bottom: 12px !important;
+  }
+}
+
+/* === Correction du footer masqué sur la page Actualités === */
+body:has(.page[data-page="actualites"]) .site-footer {
+  position: relative;     /* pour que le footer se place dans le flux */
+  z-index: 2;             /* passe au-dessus du hero fixe */
+  background: #000;       /* pour garantir la continuité du fond */
 }
 
 /* ############################################################## */
@@ -996,42 +1008,6 @@ body {
 @media (max-width: 560px) {
   .page[data-page="contact"] .contact-card { width: 80vw; }
   .page[data-page="contact"] .contact-body { margin-left: clamp(10px, 2vw, 24px); }
-}
-
-/* ===== Spécifique iPhone SE (≈375px) ===== */
-@media (max-width: 375px) {
-
-  /* on reprend la logique mobile mais on abaisse un peu le titre */
-  .page[data-page="actualites"] h1 {
-    font-size: clamp(1.3rem, 6vw, 9rem);
-    max-width: 60vw;
-    line-height: 1.2;
-    position: absolute;
-    top: 43.5vh; /* 🔥 avant c’était ~36.5vh : on le place clairement sous l’image */
-    margin: 0;
-    text-align: center;
-    color: var(--c-muted);
-  }
-
-  /* on garde l’image telle quelle */
-  .news-hero {
-    background-size: contain;
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-color: #000;
-  }
-
-   /* on garde la boîte mais on l’ajuste légèrement plus bas */
-  .news-wrap {
-    top: -17.4vh; /* 🔥 avant -20vh → on la baisse un peu pour laisser plus de place au titre */
-  }
-}
-
-/* === Correction du footer masqué sur la page Actualités === */
-body:has(.page[data-page="actualites"]) .site-footer {
-  position: relative;     /* pour que le footer se place dans le flux */
-  z-index: 2;             /* passe au-dessus du hero fixe */
-  background: #000;       /* pour garantir la continuité du fond */
 }
 
 /* ############################################################## */
