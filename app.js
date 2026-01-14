@@ -1,5 +1,7 @@
 /* SPA minimaliste avec hash routing + contenu JSON (partials supportés) */
 
+document.documentElement.classList.add('js');
+
 const NAV_ITEMS = [
   { id: "accueil",     label: "Accueil" },
   { id: "actualites",  label: "Actualités" },
@@ -392,16 +394,9 @@ if (routeId === "accueil") {
   }
 
   setDocumentTitle(routeId);
-
-  // Indicateur léger de chargement (optionnel)
-  content.innerHTML = `
-    <section class="page" data-page="${routeId}">
-      <h1>${page.title}</h1>
-      <div class="skeleton"></div>
-      <div class="skeleton"></div>
-      <div class="skeleton short"></div>
-    </section>
-  `;
+  
+  // Mode "attente" sauf pour galerie
+  if (routeId !== 'galerie') content.classList.add('is-pending');
 
   // Charger soit un partial HTML (contentUrl), soit du HTML inline (content)
   let innerHTML = "";
@@ -431,6 +426,8 @@ content.innerHTML = `
 
   // Hook JS spécifique à la page (si défini)
   PAGE_SCRIPTS[routeId]?.();
+
+  if (routeId !== 'galerie') content.classList.remove('is-pending');
 
   // Accessibilité (tu peux masquer visuellement l’outline via CSS)
   // Donne le focus sans faire scroller vers le bas
@@ -462,17 +459,11 @@ async function loadPages(){
   }
 }
 
-// Forcer le scroll tout en haut après changement de page
-window.scrollTo({
-  top: 0,
-  behavior: "instant"  // ou "smooth" si tu veux une transition
-});
-
 // Listeners init
-window.addEventListener("hashchange", () => renderPage(getCurrentRoute()));
 menuBtn?.addEventListener("click", toggleMobileMenu);
 window.addEventListener("hashchange", () => {
   closeMobileMenu();                 // ferme le tiroir si ouvert
+  window.scrollTo(0, 0);
   renderPage(getCurrentRoute());
 });
 

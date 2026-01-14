@@ -913,7 +913,7 @@ body.is-actualites .site-footer {
   */
   .news-hero {
     position: fixed !important;
-    top: 30px;                  /* ⬅️ commence sous le header */
+    top: 64px;                  /* ⬅️ commence sous le header */
     left: 0;
     right: 0;
     height: calc(100vh - 64px);
@@ -927,7 +927,7 @@ body.is-actualites .site-footer {
 
   /* Laisse un espace de 100vh pour que toute la photo soit visible au début */
   .news-spacer {
-    height: (100vh-64px) !important;
+    height: calc(100vh-64px) !important;
   }
 
   /* BLOC AVEC LES ARTICLES :
@@ -1171,4 +1171,27 @@ body {
   font-size: 0.75rem;
   opacity: 0.6;
   color: #fff;
+}
+
+/* ========================= NEW ====================== */
+
+/* =========================================================
+   SPA "affichage d'un coup"
+   - Pendant le fetch : fond beige seulement, pas de carte noire
+   - Quand prêt : la page apparaît d’un coup
+   ========================================================= */
+
+html.js #content.is-pending {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* petit fondu (tu peux mettre 0ms si tu veux “snap”) */
+html.js #content {
+  transition: opacity 120ms ease;
+}
+
+/* Option : éviter un flash si des éléments ont des animations */
+@media (prefers-reduced-motion: reduce) {
+  html.js #content { transition: none; }
 }
