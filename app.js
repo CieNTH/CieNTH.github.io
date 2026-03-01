@@ -3,6 +3,7 @@
 document.documentElement.classList.add('js');
 
 const NAV_ITEMS = [
+  { id: "revue", label: "La Revue de Nathan Thomas" },
   { id: "accueil",     label: "Accueil" },
   { id: "actualites",  label: "Actualités" },
   { id: "biographie",  label: "Biographie" },
@@ -233,74 +234,91 @@ const safeReposition = () => {
   },
   /* 🔥 Nouveau : script spécifique pour la page Billetterie */
   billetterie() {
-    // On récupère les éléments
-    const daysEl    = document.getElementById('cd-days');
-    const hoursEl   = document.getElementById('cd-hours');
-    const minutesEl = document.getElementById('cd-minutes');
-    const secondsEl = document.getElementById('cd-seconds');
-    const endEl     = document.getElementById('countdown-end');
-    const gridEl    = document.querySelector('.page[data-page="billetterie"] .countdown-grid');
+  const closedEl  = document.getElementById('ticketing-closed');
+  const openEl    = document.getElementById('ticketing-open');
 
-    if (!daysEl || !hoursEl || !minutesEl || !secondsEl || !endEl || !gridEl) return;
+  const daysEl    = document.getElementById('cd-days');
+  const hoursEl   = document.getElementById('cd-hours');
+  const minutesEl = document.getElementById('cd-minutes');
+  const secondsEl = document.getElementById('cd-seconds');
 
-    // Date cible : 3 mars 2026, 12:00, heure Suisse (CET, UTC+1 à cette date)
-    const target = new Date('2026-03-03T12:00:00+01:00');
+  if (!closedEl || !openEl) return;
 
-    let timerId = null;
+  // ✅ Date cible : 3 mars 2026, 12:00, Suisse
+  const target = new Date('2026-03-03T12:00:00+01:00');
+  // 🔧 TEST : décommente pour simuler "ouvert maintenant"
+  //const target = new Date(Date.now() + 10000);
 
-    const update = () => {
-      const now = new Date();
-      let diff = target - now;
+  let timerId = null;
 
-      // Si la date est passée ou atteinte
-      if (diff <= 0) {
-        clearInterval(timerId);
-        daysEl.textContent    = '0';
-        hoursEl.textContent   = '00';
-        minutesEl.textContent = '00';
-        secondsEl.textContent = '00';
+  const showOpen = () => {
+    closedEl.hidden = true;
+    openEl.hidden = false;
+    if (timerId) clearInterval(timerId);
+  };
 
-        gridEl.style.display = 'none';
-        endEl.hidden = false;
-        return;
-      }
+  const showClosed = () => {
+    closedEl.hidden = false;
+    openEl.hidden = true;
+  };
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days    = Math.floor(totalSeconds / 86400);
-      const hours   = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+  const update = () => {
+    const now = new Date();
+    const diff = target - now;
 
-      daysEl.textContent    = String(days);
-      hoursEl.textContent   = String(hours).padStart(2, '0');
-      minutesEl.textContent = String(minutes).padStart(2, '0');
-      secondsEl.textContent = String(seconds).padStart(2, '0');
-    };
+    // Si date atteinte → on bascule
+    if (diff <= 0) {
+      showOpen();
+      return;
+    }
 
-    // Première mise à jour immédiate
-    update();
-    // Puis toutes les secondes
-    timerId = setInterval(update, 1000);
+    // Sinon on affiche le countdown
+    showClosed();
 
-    // Nettoyage quand on quitte la page (hash change)
-    const observer = new MutationObserver(() => {
-      const pageStillHere = document.querySelector('.page[data-page="billetterie"]');
-      if (!pageStillHere) {
-        clearInterval(timerId);
-        observer.disconnect();
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Si jamais les IDs n'existent pas (au cas où), on ne plante pas
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days    = Math.floor(totalSeconds / 86400);
+    const hours   = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    daysEl.textContent    = String(days);
+    hoursEl.textContent   = String(hours).padStart(2, '0');
+    minutesEl.textContent = String(minutes).padStart(2, '0');
+    secondsEl.textContent = String(seconds).padStart(2, '0');
+  };
+
+  // 1) Mise à jour immédiate
+  update();
+
+  // 2) Puis toutes les secondes si on est encore "fermé"
+  timerId = setInterval(update, 1000);
+
+  // Nettoyage si on quitte la page
+  const observer = new MutationObserver(() => {
+    const stillHere = document.querySelector('.page[data-page="billetterie"]');
+    if (!stillHere) {
+      clearInterval(timerId);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
   },
 };
 
 // Helpers
 const setDocumentTitle = (routeId) => {
-  // On regarde le label du menu pour cette route
+
+  if (routeId === "accueil") {
+    document.title = "Compagnie NTH — Nathan Thomas";
+    return;
+  }
+
   const navItem = NAV_ITEMS.find(item => item.id === routeId);
   const navLabel = navItem ? navItem.label : "Page";
 
-  // 🔥 Titre de l’onglet forcé ici
   document.title = `Compagnie NTH — ${navLabel}`;
 };
 
@@ -340,9 +358,21 @@ const toggleMobileMenu = () => {
 };
 
 // Router
+/*
 function getCurrentRoute(){
   const hash = window.location.hash.replace("#","");
   return hash || "accueil";
+}
+*/
+function getCurrentRoute(){
+  const hash = window.location.hash.replace("#","");
+
+  // 🔥 si aucun hash → biographie par défaut
+  if (!hash) {
+    return "revue";
+  }
+
+  return hash;
 }
 
 function buildNav(activeId){
@@ -415,7 +445,9 @@ if (routeId === "accueil") {
   if (token !== lastRenderToken) return;
 
   // Si on est sur la page d'accueil, ne pas afficher le <h1>
-const titleHTML = routeId === "accueil" ? "" : `<h1>${page.title}</h1>`;
+const titleHTML = (routeId === "accueil" || routeId === "revue")
+  ? ""
+  : `<h1>${page.title}</h1>`;
 
 content.innerHTML = `
   <section class="page" data-page="${routeId}">

@@ -2,6 +2,11 @@
   "siteTitle": " ",
   "pages": [
     {
+      "id": "revue",
+      "title": "La Revue de Nathan Thomas",
+      "contentUrl": "partials/revue.html"
+    },
+    {
       "id": "accueil",
       "title": "Accueil",
       "contentUrl": "partials/accueil_logo.html"

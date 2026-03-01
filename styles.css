@@ -389,6 +389,18 @@ a,button,input,textarea{
   }
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* --------------------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------------------- */
 
@@ -1035,15 +1047,19 @@ body:has(.page[data-page="actualites"]) .site-footer {
 
 /* ===== Encadré champagne pour l’annonce ===== */
 .page[data-page="billetterie"] .ticketing-info {
-  color: #000;                               /* texte noir pour le contraste */
+  color: #000;
   background: color-mix(in srgb, var(--c-muted) 80%, #ffffff 10%);
   padding: 0.9rem 1.4rem;
   border-radius: 14px;
-  display: inline-block;                     /* l’encadré suit la largeur du texte */
-  margin-bottom: clamp(18px, 3vw, 28px);
+
+  display: block;              /* 🔥 CHANGÉ */
+  width: fit-content;          /* 🔥 CHANGÉ */
+  margin: 0 auto clamp(18px, 3vw, 28px);   /* 🔥 centre horizontalement */
+
   font-size: clamp(1.05rem, 2.6vw, 1.4rem);
-  box-shadow: 0 4px 22px rgba(0,0,0,0.25);   /* subtil pour le faire ressortir */
+  box-shadow: 0 4px 22px rgba(0,0,0,0.25);
   letter-spacing: 0.3px;
+  text-align: center;
 }
 
 /* Bloc compte à rebours */
@@ -1194,4 +1210,514 @@ html.js #content {
 /* Option : éviter un flash si des éléments ont des animations */
 @media (prefers-reduced-motion: reduce) {
   html.js #content { transition: none; }
+}
+
+/* ########################## TESTS BILLETTERIE ############################### */
+
+/* ===========================
+   Billetterie ouverte : cartes théâtres
+=========================== */
+
+.ticketing-open{
+  margin-top: 22px;
+  text-align: left;
+}
+
+.ticketing-open__title{
+  margin: 0 0 6px;
+  color: var(--c-white);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+}
+
+.ticketing-open__subtitle{
+  margin: 0 0 18px;
+  color: rgba(255,255,255,0.75);
+}
+
+.theatre-list{
+  display: grid;
+  gap: 14px;
+}
+
+.theatre-card{
+  background: rgba(0,0,0,0.55);
+  border: 1px solid var(--c-muted);
+  border-radius: 14px;
+  padding: 14px 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+
+.theatre-card__top{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.theatre-name{
+  margin: 0;
+  color: var(--c-white);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.theatre-status{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 1rem;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.status-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.status--green { color: #d7ffe9; }
+.status--green .status-dot{ background: #26d07c; }
+
+.status--orange { color: #ffe7c7; }
+.status--orange .status-dot{ background: #f59f00; }
+
+.status--red { color: #ffd6d6; }
+.status--red .status-dot{ background: #ff4d4f; }
+
+.theatre-card__bottom{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.theatre-count{
+  display: grid;
+  gap: 2px;
+}
+
+.theatre-count__label{
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.65);
+}
+
+.theatre-count__value{
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--c-white);
+  letter-spacing: 0.4px;
+}
+
+.theatre-link{
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 700;
+  color: var(--c-primary);
+  border: 3px solid rgba(5,118,104,.45);
+  padding: .55rem .9rem;
+  border-radius: 999px;
+  transition: background .2s ease, transform .05s ease, border-color .2s ease;
+}
+.theatre-link:hover{
+  background: rgba(5,118,104,.15);
+  border-color: rgba(5,118,104,.7);
+}
+.theatre-link:active{ transform: translateY(1px); }
+
+/* Billetterie — lignes date/heure */
+.theatre-dates{
+  display: grid;
+  gap: .35rem;
+}
+
+.theatre-date-line{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .35rem .5rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--c-muted);
+}
+
+.theatre-date{
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+.theatre-time{
+  color: var(--c-muted);
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin-left: 12px;   /* ← espace plus grand */
+}
+
+
+/* ===========================
+   MOBILE — cartes billetterie
+=========================== */
+
+@media (max-width: 600px){
+
+  /* Empile tout verticalement */
+  .theatre-card__top{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  /* Le bloc du bas devient vertical aussi */
+  .theatre-card__bottom{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Date prend toute la largeur */
+  .theatre-dates{
+    width: 100%;
+  }
+
+  .theatre-date-line{
+    width: 100%;
+  }
+
+  /* Disponibilité sous la date */
+  .theatre-status{
+    order: 3;              /* position après la date */
+    margin-top: 4px;
+  }
+
+  /* Bouton en dessous */
+  .theatre-link{
+    order: 4;
+    width: 100%;           /* bouton large mobile (optionnel mais joli) */
+    justify-content: center;
+    text-align: center;
+  }
+
+  .theatre-name{
+  font-weight: 700;
+  font-size: 4.5vw;
+  line-height: 1.25;
+  }
+
+}
+
+/* =========================================================
+   LA REVUE DE NATHAN THOMAS
+========================================================= */
+
+/* ✅ Revue : élargir le conteneur global uniquement sur cette page */
+body:has(.page[data-page="revue"]) .content{
+  max-width: 1300px;   /* <-- augmente ici (1200 / 1300 / 1500...) */
+}
+
+/* option : réduire un peu les marges/padding pour gagner encore */
+body:has(.page[data-page="revue"]) .content{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+
+/* =========================================================
+   REVUE — HEADER
+========================================================= */
+
+.page[data-page="revue"] .revue-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:0rem;
+  flex-wrap:wrap;
+}
+
+.page[data-page="revue"] .revue-cta{
+  /* ✅ Réglages faciles */
+  --cta-x: 0px;          /* + => à droite, - => à gauche */
+  --cta-y: -15px;          /* + => vers le bas, - => vers le haut */
+  --cta-font: 1rem;      /* taille texte */
+  --cta-pad-y: .65rem;
+  --cta-pad-x: 1.2rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+
+  font-size: var(--cta-font);
+  font-weight: 650;
+  letter-spacing: .2px;
+
+  padding: var(--cta-pad-y) var(--cta-pad-x);
+  border-radius: 999px;
+
+  background: color-mix(in srgb, var(--c-muted) 82%, #ffffff 12%);
+  color: #000;
+  text-decoration: none;
+
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, filter .18s ease;
+
+  /* ✅ Positionnement fin */
+  transform: translate(var(--cta-x), var(--cta-y));
+}
+
+.page[data-page="revue"] .revue-cta:hover{
+  background: color-mix(in srgb, var(--c-muted) 92%, #000 8%); /* plus foncé */
+  box-shadow: 0 7px 24px rgba(0,0,0,0.35);
+  transform: translate(var(--cta-x), calc(var(--cta-y) - 1px));
+}
+
+.page[data-page="revue"] .revue-cta:active{
+  transform: translate(var(--cta-x), calc(var(--cta-y) + 1px));
+  box-shadow: 0 3px 14px rgba(0,0,0,0.28);
+}
+
+.page[data-page="revue"] .revue-cta::after{
+  content: "→";
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+  transform: translateX(0);
+  transition: transform .18s ease;
+  opacity: .9;
+}
+
+/* =========================================================
+   REVUE — CONTAINER PRINCIPAL
+========================================================= */
+
+/* REVUE : pas de double carte */
+.page[data-page="revue"] .revue{
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0; /* ou garde un petit padding si tu veux */
+}
+
+
+/* =========================================================
+   HAUT : IMAGE + TEXTE
+========================================================= */
+
+.page[data-page="revue"] .revue-top{
+  grid-template-columns: minmax(300px, 1fr) 1.2fr;
+  gap:2rem;
+  align-items:start;
+  margin-bottom:0.3rem;
+}
+
+
+/* IMAGE */
+
+.page[data-page="revue"] .revue-media{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.45);
+}
+
+.page[data-page="revue"] .revue-media img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.page[data-page="revue"] .revue-photo-credit{
+  position:absolute;
+  bottom:10px;
+  right:10px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:8px;
+  font-size:.8rem;
+}
+
+
+/* TEXTE */
+
+.page[data-page="revue"] .revue-accroche p{
+  margin:0 0 1rem;
+  color:var(--c-white);
+  line-height:1.65;
+  font-size:2.5rem;
+}
+
+.page[data-page="revue"] .revue-text p{
+  margin:0 0 1rem;
+  color:var(--c-white);
+  line-height:1.65;
+  font-size:1.05rem;
+}
+
+/* =========================================================
+   CRÉDITS
+========================================================= */
+
+.page[data-page="revue"] .revue-credits{
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:2rem;
+
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1.4rem 3rem;
+}
+
+.page[data-page="revue"] .credit-block{
+  color:var(--c-white);
+  line-height:1.5;
+  font-size:1rem;
+}
+
+.page[data-page="revue"] .credit-title{
+  display:block;
+  font-size:.8rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--c-muted);
+  margin-bottom:4px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:900px){
+
+  .page[data-page="revue"] .revue-top{
+    grid-template-columns:1fr;
+  }
+
+  .page[data-page="revue"] .revue-credits{
+    grid-template-columns:1fr;
+  }
+
+  .page[data-page="revue"] .revue-header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+}
+
+/* =========================================================
+   REVUE — TÉLÉPHONE
+========================================================= */
+@media (max-width: 700px){
+
+  /* Variables faciles */
+  .page[data-page="revue"]{
+    --revue-h1: 1.55rem;
+    --revue-accroche: 1.8rem;
+    --revue-text: 1rem;
+    --revue-cta-font: 1.3rem;
+  }
+
+  /* HEADER */
+  .page[data-page="revue"] .revue-header{
+    flex-direction: column;
+    align-items: stretch;     /* ✅ garde le titre à gauche */
+    gap: .6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  /* Titre à gauche */
+  .page[data-page="revue"] .revue-header h1{
+    font-size: var(--revue-h1);
+    line-height: 1.15;
+    margin: 0;
+    text-align: left;
+    margin-bottom: .5rem;
+  }
+
+  /* Bouton centré uniquement */
+  .page[data-page="revue"] .revue-cta{
+    --cta-x: 0px;
+    --cta-y: 0px;
+    --cta-font: var(--revue-cta-font);
+
+    align-self: center;   /* ✅ centre seulement le bouton */
+    justify-content: center;
+  }
+
+  /* Texte */
+  .page[data-page="revue"] .revue-accroche p{
+    font-size: var(--revue-accroche);
+    line-height: 1.35;
+    margin-top: 1rem;
+  }
+
+  .page[data-page="revue"] .revue-text p{
+    font-size: var(--revue-text);
+  }
+
+}
+/* =========================================================
+   REVUE — SPONSORS
+========================================================= */
+
+.page[data-page="revue"] .revue-sponsors{
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.page[data-page="revue"] .revue-sponsors-title{
+  margin: 0 0 1.2rem;
+  font-size: .9rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Logos côte à côte */
+.page[data-page="revue"] .revue-sponsors-logos{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.page[data-page="revue"] .revue-sponsors-logos img{
+  max-height: 70px;   /* taille des logos */
+  width: auto;
+  opacity: 0.85;
+  transition: all .25s ease;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+@media (max-width: 700px){
+
+  .page[data-page="revue"] .revue-sponsors-logos{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  }
+  .page[data-page="revue"] .revue-sponsors-logos img{
+  max-width: 39vw;   /* taille des logos */
+  width: auto;
+  opacity: 0.85;
+  transition: all .25s ease;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  }
 }

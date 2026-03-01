@@ -1,33 +1,177 @@
 <!-- partials/billetterie.html -->
 <section class="ticketing">
-  <p class="ticketing-info">
-    La billetterie ouvrira le <b>3 mars 2026 à 12h00&nbsp;</b>!
-  </p>
 
-  <section class="countdown" aria-label="Compte à rebours avant l'ouverture de la billetterie">
-    <p class="countdown-label">Ouverture dans</p>
-
-    <div class="countdown-grid">
-      <div class="countdown-unit">
-        <span class="count-number" id="cd-days">–</span>
-        <span class="count-label">jours</span>
-      </div>
-      <div class="countdown-unit">
-        <span class="count-number" id="cd-hours">–</span>
-        <span class="count-label">heures</span>
-      </div>
-      <div class="countdown-unit">
-        <span class="count-number" id="cd-minutes">–</span>
-        <span class="count-label">minutes</span>
-      </div>
-      <div class="countdown-unit">
-        <span class="count-number" id="cd-seconds">–</span>
-        <span class="count-label">secondes</span>
-      </div>
-    </div>
-
-    <p class="countdown-end" id="countdown-end" hidden>
-      La billetterie est ouverte&nbsp;!
+  <!-- ============ AVANT OUVERTURE (COUNTDOWN) ============ -->
+  <section id="ticketing-closed" class="ticketing-closed">
+    <p class="ticketing-info">
+      La billetterie ouvrira le <b>3 mars 2026 à 12h00</b> !
     </p>
+
+    <section class="countdown" aria-label="Compte à rebours avant l'ouverture de la billetterie">
+      <p class="countdown-label">Ouverture dans</p>
+
+      <div class="countdown-grid">
+        <div class="countdown-unit">
+          <span class="count-number" id="cd-days">–</span>
+          <span class="count-label">jours</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="count-number" id="cd-hours">–</span>
+          <span class="count-label">heures</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="count-number" id="cd-minutes">–</span>
+          <span class="count-label">minutes</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="count-number" id="cd-seconds">–</span>
+          <span class="count-label">secondes</span>
+        </div>
+      </div>
+    </section>
   </section>
+
+  <!-- ============ APRÈS OUVERTURE (LISTE THÉÂTRES) ============ -->
+  <section id="ticketing-open" class="ticketing-open" hidden>
+    <p class="ticketing-info">
+      La billetterie est ouverte, <b>réservez vos places&nbsp;!</b>
+    </p>
+
+    <div class="theatre-list">
+      <!-- Théâtre 1 -->
+      <!-- Date 1 -->
+      <article class="theatre-card">
+
+        <div class="theatre-card__top">
+
+            <h3 class="theatre-name">
+                  VEN 17 AVRIL 2026 <span class="theatre-time">20h00</span>
+            </h3>
+
+            <span class="theatre-status status--green">
+              <span class="status-dot"></span>
+              Beaucoup de places
+            </span>
+
+        </div>
+
+        <div class="theatre-card__bottom">
+          <div class="theatre-dates">
+            <div class="theatre-date-line">
+                <span class="theatre-date">Théâtre du casino — Le Locle</span>
+            </div>
+          </div>
+
+          <a class="theatre-link" href="https://www.eventim-light.com/ch/a/693effc3729a712b32fc1e59" target="_blank" rel="noopener">
+            Réserver →
+          </a>
+        </div>
+      </article>
+
+      <!-- Date 2 -->
+      <article class="theatre-card">
+        <div class="theatre-card__top">
+          <h3 class="theatre-name">
+                  SAM 18 AVRIL 2026 <span class="theatre-time">20h00</span>
+          </h3>
+          <span class="theatre-status status--green">
+            <span class="status-dot"></span>
+            Beaucoup de places
+          </span>
+        </div>
+
+        <div class="theatre-card__bottom">
+          <div class="theatre-dates">
+            <div class="theatre-date-line">
+                <span class="theatre-date">Théâtre du casino — Le Locle</span>
+            </div>
+          </div>
+
+          <a class="theatre-link" href="https://www.eventim-light.com/ch/a/693effc3729a712b32fc1e59" target="_blank" rel="noopener">
+            Réserver →
+          </a>
+        </div>
+      </article>
+
+      <!-- Date 3 -->
+      <article class="theatre-card">
+        <div class="theatre-card__top">
+          <h3 class="theatre-name">
+                  DIM 19 AVRIL 2026 <span class="theatre-time">17h00</span>
+          </h3>
+          <span class="theatre-status status--green">
+            <span class="status-dot"></span>
+            Beaucoup de places
+          </span>
+        </div>
+
+        <div class="theatre-card__bottom">
+          <div class="theatre-dates">
+            <div class="theatre-date-line">
+                <span class="theatre-date">Théâtre du casino — Le Locle</span>
+            </div>
+          </div>
+
+          <a class="theatre-link" href="https://www.eventim-light.com/ch/a/693effc3729a712b32fc1e59" target="_blank" rel="noopener">
+            Réserver →
+          </a>
+        </div>
+      </article>
+
+      <!-- Théâtre 2 -->
+      <!-- Date 1 -->
+      <article class="theatre-card">
+        <div class="theatre-card__top">
+          <h3 class="theatre-name">
+                  VEN 29 MAI 2026 <span class="theatre-time">20h00</span>
+          </h3>
+          <span class="theatre-status status--green">
+            <span class="status-dot"></span>
+            Beaucoup de places
+            <!-- Plus que quelques places-->            
+            <!-- Dernières places-->
+          </span>
+        </div>
+
+        <div class="theatre-card__bottom">
+          <div class="theatre-dates">
+            <div class="theatre-date-line">
+                <span class="theatre-date">Théâtre du Passage — Neuchâtel</span>
+            </div>
+          </div>
+
+          <a class="theatre-link" href="https://www.theatredupassage.ch/programme/detail/154-la-revue-de-nathan-thomas" target="_blank" rel="noopener">
+            Réserver →
+          </a>
+        </div>
+      </article>
+
+      <!-- Théâtre 3 -->
+      <article class="theatre-card">
+        <div class="theatre-card__top">
+          <h3 class="theatre-name">
+                  VEN 08 MAI 2026 <span class="theatre-time">20h00</span>
+          </h3>
+          <span class="theatre-status status--green">
+            <span class="status-dot"></span>
+            Beaucoup de places
+          </span>
+        </div>
+
+        <div class="theatre-card__bottom">
+          <div class="theatre-dates">
+            <div class="theatre-date-line">
+                <span class="theatre-date">Théâtre des Abeilles — La Chaux-de-Fonds</span>
+            </div>
+          </div>
+
+          <a class="theatre-link" href="https://gelore.ne.ch/app/gelore2_145/DBP_GEBIL_FORM.affFormEve?myPiSocId=7&myPiCheck=3855808389&myPiMode=52420&myPiLang=FR&myPiEveId=2881&myPiVIP=" target="_blank" rel="noopener">
+            Réserver →
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
 </section>
