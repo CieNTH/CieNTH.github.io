@@ -1721,3 +1721,15 @@ body:has(.page[data-page="revue"]) .content{
   border-radius: 8px;
   }
 }
+
+/* =========================================================
+   SOUTIEN — SPONSORS
+========================================================= */
+
+.page[data-page="soutien"] .soutien-block {
+  color: var(--c-white);
+}
+
+.page[data-page="soutien"] .soutien-don-texte {
+   color: var(--c-white);
+}

@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: "billetterie", label: "Billetterie" },
   { id: "galerie",     label: "Galerie" },
   { id: "contact",     label: "Contact" },
+  { id: "soutien",     label: "Nous soutenir" }
 ];
 
 // Éléments DOM

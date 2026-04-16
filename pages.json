@@ -33,6 +33,11 @@
     "id": "contact",
     "title": "Contact",
     "contentUrl": "partials/contact.html"
-  }
+    },
+    {
+    "id": "soutien",
+    "title": "Nous soutenir",
+    "contentUrl": "partials/soutien.html"
+    }
   ]
 }
